@@ -9,14 +9,14 @@ name: Verify
 jobs:
   build_and_verify:
     runs-on: ubuntu-latest
+    env:
+      apiKey: '${{ secrets.NEXT_PUBLIC_FIREBASE_APIKEY }}'
+      uthDomain: '${{ secrets.NEXT_PUBLIC_FIREBASE_AUTHDOMAIN'
+      projectId: '${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECTID }}'
+      storageBucket: '${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGEBUCKET }}'
+      messagingSenderId: '${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGINGSENDERID }}'
+      appId: '${{ secrets.NEXT_PUBLIC_FIREBASE_APPID }}'
+      measurementId: '${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENTID }}'
     steps:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
-        with:
-          apiKey: '${{ secrets.NEXT_PUBLIC_FIREBASE_APIKEY }}'
-          uthDomain: '${{ secrets.NEXT_PUBLIC_FIREBASE_AUTHDOMAIN'
-          projectId: '${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECTID }}'
-          storageBucket: '${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGEBUCKET }}'
-          messagingSenderId: '${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGINGSENDERID }}'
-          appId: '${{ secrets.NEXT_PUBLIC_FIREBASE_APPID }}'
-          measurementId: '${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENTID }}'
