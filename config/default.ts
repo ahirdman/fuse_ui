@@ -10,15 +10,19 @@ export const config = {
       measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID as string,
     },
     emulators: {
-      auth: {
-        active: false,
+      authentication: {
+        isActive: process.env.NODE_ENV === 'development',
         url: 'http://localhost:9099',
       },
-      firestore: {
-        active: false,
+      db: {
+        isActive: process.env.NODE_ENV === 'development',
+        origin: 'localhost',
+        port: 8080,
       },
-      functions: {
-        active: false,
+      cloudFunctions: {
+        isActive: process.env.NODE_ENV === 'development',
+        origin: 'localhost',
+        port: 5001,
       },
     },
   },

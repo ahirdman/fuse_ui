@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Props) {
     }
 
     if (!user) {
-      router.replace('/');
+      router.replace('/auth');
     }
   }, [user]);
 

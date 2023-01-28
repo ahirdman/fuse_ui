@@ -3,6 +3,7 @@ name: Verify
   push:
     branches:
       - main
+      - development
 
 env:
   NEXT_PUBLIC_FIREBASE_APIKEY: '${{ secrets.NEXT_PUBLIC_FIREBASE_APIKEY }}'
