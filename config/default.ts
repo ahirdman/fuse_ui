@@ -9,6 +9,18 @@ export const config = {
       appId: process.env.NEXT_PUBLIC_FIREBASE_APPID as string,
       measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID as string,
     },
+    emulators: {
+      auth: {
+        active: false,
+        url: 'http://localhost:9099',
+      },
+      firestore: {
+        active: false,
+      },
+      functions: {
+        active: false,
+      },
+    },
   },
   pages: [
     { url: '/dashboard', display: 'Dashboard' },
@@ -16,4 +28,4 @@ export const config = {
     { url: '/tags', display: 'Tags' },
     { url: '/settings', display: 'Settings' },
   ],
-} as const;
+};
