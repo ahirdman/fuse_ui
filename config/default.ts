@@ -1,18 +1,4 @@
-export interface ApplicationConfiguration {
-  firebase: {
-    credentials: {
-      apiKey: string;
-      authDomain: string;
-      projectId: string;
-      storageBucket: string;
-      messagingSenderId: string;
-      appId: string;
-      measurementId: string;
-    };
-  };
-}
-
-export const config: ApplicationConfiguration = {
+export const config = {
   firebase: {
     credentials: {
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY as string,
@@ -24,4 +10,10 @@ export const config: ApplicationConfiguration = {
       measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENTID as string,
     },
   },
-};
+  pages: [
+    { url: '/dashboard', display: 'Dashboard' },
+    { url: '/library', display: 'Library' },
+    { url: '/tags', display: 'Tags' },
+    { url: '/settings', display: 'Settings' },
+  ],
+} as const;

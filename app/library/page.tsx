@@ -1,5 +1,7 @@
 export default function Library() {
   return (
-    <h1>Library</h1>
-  )
+    <div className="h-full grid">
+      <div className="place-self-center text-white">Library</div>
+    </div>
+  );
 }
