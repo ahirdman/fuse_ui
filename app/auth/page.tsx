@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { config } from '@/config/default';
-import { auth } from '@/lib/firebase';
-import Link from 'next/link';
-import { FormEvent, useState } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from "@/lib/firebase";
+import Link from "next/link";
+import { FormEvent, useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
-export default function Auth() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+export default function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
 
   const handleSinIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ export default function Auth() {
   return (
     <form
       onSubmit={handleSinIn}
-      className="flex flex-col justify-self-stretch justify-evenly text-zinc-600 px-10 md:col-start-2 md:col-span-3 2xl:col-span-1 2xl:col-start-2 row-start-3 row-span-2"
+      className="row-span-2 row-start-3 flex flex-col justify-evenly justify-self-stretch px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
     >
       <div className="flex flex-col">
         <label htmlFor="email" className="pb-1">
@@ -31,8 +31,8 @@ export default function Auth() {
           id="email"
           name="email"
           autoFocus
-          onChange={e => setEmail(e.target.value)}
-          className="text-white bg-transparent border-b border-zinc-700 pb-5 focus:outline-none hover:border-white caret-[#e75627]"
+          onChange={(e) => setEmail(e.target.value)}
+          className="border-b border-zinc-700 bg-transparent pb-5 text-white caret-[#e75627] hover:border-white focus:outline-none"
         />
       </div>
       <div className="flex flex-col">
@@ -43,20 +43,20 @@ export default function Auth() {
           type="password"
           id="password"
           name="password"
-          onChange={e => setPassword(e.target.value)}
-          className="text-white bg-transparent border-b border-zinc-700 pb-5 focus:outline-none hover:border-white caret-[#e75627]"
+          onChange={(e) => setPassword(e.target.value)}
+          className="border-b border-zinc-700 bg-transparent pb-5 text-white caret-[#e75627] hover:border-white focus:outline-none"
         />
       </div>
       <button
         type="submit"
-        className={`py-4 bg-zinc-800 text-zinc-500 rounded-3xl hover:text-white hover:shadow-lg focus:outline-none active:bg-[#e75627] transition duration-150 ease-in-out ${
-          loading ?? 'bg-[[#e75627] animate-spin'
+        className={`rounded-3xl bg-zinc-800 py-4 text-zinc-500 transition duration-150 ease-in-out hover:text-white hover:shadow-lg focus:outline-none active:bg-[#e75627] ${
+          loading ?? "bg-[[#e75627] animate-spin"
         }`}
       >
         SIGN IN
       </button>
       <p className="text-center">
-        Dont have an account?{' '}
+        Dont have an account?{" "}
         <Link href="/auth/signup" className="text-white">
           Sign up
         </Link>
