@@ -1,4 +1,6 @@
-export const config = {
+const isDevelopmentEnvironment = process.env.NODE_ENV === 'development';
+
+const config = {
   firebase: {
     credentials: {
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY as string,
@@ -11,16 +13,16 @@ export const config = {
     },
     emulators: {
       authentication: {
-        isActive: process.env.NODE_ENV === 'development',
+        isActive: isDevelopmentEnvironment,
         url: 'http://localhost:9099',
       },
       db: {
-        isActive: process.env.NODE_ENV === 'development',
+        isActive: isDevelopmentEnvironment,
         origin: 'localhost',
         port: 8080,
       },
       cloudFunctions: {
-        isActive: process.env.NODE_ENV === 'development',
+        isActive: isDevelopmentEnvironment,
         origin: 'localhost',
         port: 5001,
       },
@@ -33,3 +35,5 @@ export const config = {
     { url: '/settings', display: 'Settings' },
   ],
 };
+
+export default config;
