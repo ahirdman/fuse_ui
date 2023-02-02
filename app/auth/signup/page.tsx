@@ -33,7 +33,7 @@ export default function SignUp() {
     <motion.form
       layout
       onSubmit={handleSignUp}
-      className="row-span-2 row-start-3 flex flex-col justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
+      className="row-span-2 row-start-3 justify-evenly justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
     >
       <AnimatePresence>
         {!user ? (
@@ -145,8 +145,8 @@ const SignInLink = () => {
       key="sign"
       layout
       initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, height: 1, x: 0 }}
-      exit={{ opacity: 0, height: 0, transition: { duration: 1 } }}
+      animate={{ opacity: 1, height: "auto", x: 0 }}
+      exit={{ opacity: 0, height: 0, transition: { duration: 0.7 } }}
       className="text-center"
     >
       Already have an account?{" "}
@@ -161,6 +161,7 @@ const AuthorizeSpotify = () => {
   return (
     <motion.div
       key="about"
+      layout
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1, delay: 1.2 }}
