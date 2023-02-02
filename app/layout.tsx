@@ -63,7 +63,7 @@ export default function RootLayout({ children }: Props) {
           {children}
           <nav
             className={`${
-              user ? "opacity-100" : "opacity-0"
+              user ? "block" : "hidden"
             } flex h-20 items-center justify-evenly bg-black text-white transition-all duration-500 ease-in-out`}
           >
             {links}
