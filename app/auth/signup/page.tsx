@@ -75,7 +75,7 @@ export default function SignUp() {
             </p>
             <button
               onClick={handleAuthorize}
-              className="w-full rounded-2xl bg-zinc-800 p-4 uppercase text-zinc-500  hover:text-white hover:shadow-lg focus:outline-none"
+              className="h-12 w-full rounded-2xl bg-zinc-800 uppercase text-zinc-500  hover:text-white hover:shadow-lg focus:outline-none"
             >
               Sign in to Spotify
             </button>
@@ -139,7 +139,6 @@ const SignUpButton = ({ accountCreated }: { accountCreated: boolean }) => {
       animate={{
         width: accountCreated ? "3rem" : "100%",
       }}
-      exit={{ width: "3rem" }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
       className="my-4 h-12 rounded-2xl bg-zinc-800 uppercase text-zinc-500 hover:text-white hover:shadow-lg focus:outline-none"
     >
