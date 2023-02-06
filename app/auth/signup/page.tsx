@@ -1,39 +1,47 @@
 "use client";
 
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { FormEvent, useState } from "react";
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 import { FiCheck } from "react-icons/fi";
-import { LayoutGroup, usePresence } from "framer-motion";
 
-type User = true | undefined;
+const emulator =
+  "http://127.0.0.1:5001/fuse-4210a/us-central1/api/token/authorize";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [createUserWithEmailAndPassword, user, loading, error] =
-  //   useCreateUserWithEmailAndPassword(auth);
-
-  const [user, setuser] = useState<User>(undefined);
+  const [createUserWithEmailAndPassword] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [user, loading, error] = useAuthState(auth);
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (user) {
-      setuser(undefined);
-    } else {
-      setuser(true);
+    createUserWithEmailAndPassword(email, password);
+  };
+
+  const handleAuthorize = async () => {
+    const result = await fetch(`${emulator}?id=${user?.uid}`, {
+      credentials: "include",
+    });
+    const { url } = await result.json();
+
+    if (typeof window !== undefined) {
+      window.location.href = url;
     }
-    // createUserWithEmailAndPassword(email, password);
   };
 
   return (
     <motion.form
       layout
       onSubmit={handleSignUp}
-      className="row-span-2 row-start-3 justify-evenly justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
+      className="row-span-2 row-start-3 justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
     >
       <AnimatePresence>
         {!user ? (
@@ -45,13 +53,35 @@ export default function SignUp() {
         transition={{ delay: 1.2, duration: 1 }}
         className="flex w-full items-center justify-start"
       >
-        <SignUpButton accountCreated={user} />
+        <SignUpButton accountCreated={user !== null && user !== undefined} />
         <AnimatePresence>
           {user ? <AccountCreatedText /> : null}
         </AnimatePresence>
       </motion.div>
       <AnimatePresence>{user ? null : <SignInLink />}</AnimatePresence>
-      <AnimatePresence>{user ? <AuthorizeSpotify /> : null}</AnimatePresence>
+      <AnimatePresence>
+        {user ? (
+          <motion.div
+            key="about"
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            exit={{ opacity: 0 }}
+          >
+            <p className="my-4 text-center">
+              You need to allow <span className="font-bold">fuse</span> to acces
+              your spotify library. Click the button below to authorize.
+            </p>
+            <button
+              onClick={handleAuthorize}
+              className="w-full rounded-2xl bg-zinc-800 p-4 uppercase text-zinc-500  hover:text-white hover:shadow-lg focus:outline-none"
+            >
+              Sign in to Spotify
+            </button>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </motion.form>
   );
 }
@@ -99,7 +129,7 @@ const SignUpUpInput = ({ setEmail, setPassword }: Props) => {
   );
 };
 
-const SignUpButton = ({ accountCreated }: { accountCreated: User }) => {
+const SignUpButton = ({ accountCreated }: { accountCreated: boolean }) => {
   return (
     <motion.button
       type="submit"
@@ -109,6 +139,7 @@ const SignUpButton = ({ accountCreated }: { accountCreated: User }) => {
       animate={{
         width: accountCreated ? "3rem" : "100%",
       }}
+      exit={{ width: "3rem" }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
       className="my-4 h-12 rounded-2xl bg-zinc-800 uppercase text-zinc-500 hover:text-white hover:shadow-lg focus:outline-none"
     >
@@ -154,26 +185,5 @@ const SignInLink = () => {
         Sign in
       </Link>
     </motion.p>
-  );
-};
-
-const AuthorizeSpotify = () => {
-  return (
-    <motion.div
-      key="about"
-      layout
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1, delay: 1.2 }}
-      exit={{ opacity: 0 }}
-    >
-      <p className="my-4">
-        You need to allow <span className="font-bold">fuse</span> to acces your
-        spotify library. Click the button below to authorize.
-      </p>
-      <button className="w-full rounded-2xl bg-zinc-800 p-4 uppercase text-zinc-500  hover:text-white hover:shadow-lg focus:outline-none">
-        Sign in to Spotify
-      </button>
-    </motion.div>
   );
 };
