@@ -4,15 +4,20 @@ import { auth } from "@/lib/firebase";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FiCheck } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AuthenticateSpotify() {
-  const [error, loading, user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
+  const router = useRouter();
 
-  // Happy path:
-  // Auth is done and redirected correclty
-  // When user is signed in, animate div and then navigate to home screen
-
-  // Something went wrong... ?
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 2500);
+    }
+  }, [user]);
 
   return (
     <div className="row-span-2 row-start-3 items-center justify-center justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2">
