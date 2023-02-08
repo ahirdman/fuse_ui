@@ -1,16 +1,34 @@
 "use client";
 
+import { SignedOutToast } from "@/components/toasts";
 import config from "@/config/default";
+import { auth } from "@/lib/firebase";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function ApplicationLayout({ children }: Props) {
+  const [user, loading] = useAuthState(auth);
+
   const pathName = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/signin");
+      toast.custom((toast) => (
+        <SignedOutToast toast={toast} text="Signed out" />
+      ));
+    }
+  });
 
   const links = config.pages.map((page) => {
     return (

@@ -1,66 +1,87 @@
 "use client";
 
+import { ErrorToast, SignedInToast } from "@/components/toasts";
 import { auth } from "@/lib/firebase";
+import { AuthError } from "@firebase/auth";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { toast } from "react-hot-toast";
+import Input from "../input";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, user, _, error] =
     useSignInWithEmailAndPassword(auth);
+  const router = useRouter();
 
-  const handleSinIn = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSinIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     signInWithEmailAndPassword(email, password);
   };
 
+  useEffect(() => {
+    if (error) {
+      const message = parseError(error);
+      toast.custom((toast) => <ErrorToast toast={toast} text={message} />);
+    }
+
+    if (user) {
+      toast.custom((toast) => <SignedInToast toast={toast} text="Signed in" />);
+      router.replace("/dashboard");
+    }
+  }, [error, user]);
+
   return (
     <form
       onSubmit={handleSinIn}
-      className="row-span-2 row-start-3 flex flex-col justify-evenly justify-self-stretch px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
+      className="row-span-2 row-start-3 justify-self-stretch px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
     >
       <div className="flex flex-col">
-        <label htmlFor="email" className="pb-1">
-          Email address
-        </label>
-        <input
-          type="text"
-          id="email"
+        <Input
+          label="Email address"
           name="email"
-          autoFocus
-          onChange={(e) => setEmail(e.target.value)}
-          className="border-b border-zinc-700 bg-transparent pb-5 text-white caret-[#e75627] hover:border-white focus:outline-none"
+          type="email"
+          error={error?.code.includes("email")}
+          setValue={setEmail}
         />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="password" className="pb-1">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
+        <Input
+          label="Password"
           name="password"
-          onChange={(e) => setPassword(e.target.value)}
-          className="border-b border-zinc-700 bg-transparent pb-5 text-white caret-[#e75627] hover:border-white focus:outline-none"
+          type="password"
+          error={error?.code.includes("password")}
+          setValue={setPassword}
         />
       </div>
       <button
         type="submit"
-        className={`rounded-3xl bg-zinc-800 py-4 text-zinc-500 transition duration-150 ease-in-out hover:text-white hover:shadow-lg focus:outline-none active:bg-[#e75627] ${
-          loading ?? "bg-[[#e75627] animate-spin"
-        }`}
+        className="my-4 h-12 w-full rounded-2xl bg-zinc-800 uppercase text-zinc-500 transition duration-150 ease-in-out hover:text-white hover:shadow-lg focus:outline-none active:bg-orange"
       >
-        SIGN IN
+        sign in
       </button>
       <p className="text-center">
         Dont have an account?{" "}
-        <Link href="/auth/signup" className="text-white">
+        <Link href="/signup" className="text-white">
           Sign up
         </Link>
       </p>
     </form>
   );
 }
+
+const parseError = (error: AuthError) => {
+  const { message } = error;
+
+  if (message.includes("passowrd")) {
+    return "Wrong password";
+  }
+
+  if (message.includes("email")) {
+    return "Wrong email";
+  }
+
+  return "Wrong credentials";
+};
