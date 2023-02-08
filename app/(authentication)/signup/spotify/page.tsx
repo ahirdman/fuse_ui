@@ -6,15 +6,20 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { FiCheck } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { UserCreatedToast } from "@/components/toasts";
+import toast from "react-hot-toast";
 
 export default function AuthenticateSpotify() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const router = useRouter();
 
   useEffect(() => {
     if (user) {
       setTimeout(() => {
         router.push("/dashboard");
+        toast.custom((toast) => (
+          <UserCreatedToast toast={toast} text="Account created" />
+        ));
       }, 2500);
     }
   }, [user]);
@@ -28,8 +33,8 @@ export default function AuthenticateSpotify() {
           </span>
         </div>
         <p className="whitespace-nowrap pl-4 text-white">
-          <span className="font-bold uppercase text-[#e75627]">Fuse</span>{" "}
-          account created
+          <span className="font-bold uppercase text-orange">Fuse</span> account
+          created
         </p>
       </div>
       <AnimatePresence>
@@ -91,9 +96,7 @@ export default function AuthenticateSpotify() {
               transition={{ duration: 1, delay: 1 }}
               className="whitespace-nowrap pl-4 text-white"
             >
-              <span className="font-bold uppercase text-[#e75627]">
-                Spotify
-              </span>{" "}
+              <span className="font-bold uppercase text-orange">Spotify</span>{" "}
               connected
             </motion.p>
           ) : null}

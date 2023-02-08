@@ -4,11 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import {
-  useAuthState,
-  useCreateUserWithEmailAndPassword,
-} from "react-firebase-hooks/auth";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { FiCheck } from "react-icons/fi";
+import Input from "../input";
 
 const emulator =
   "http://127.0.0.1:5001/fuse-4210a/us-central1/api/token/authorize";
@@ -16,9 +14,8 @@ const emulator =
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createUserWithEmailAndPassword] =
+  const [createUserWithEmailAndPassword, user] =
     useCreateUserWithEmailAndPassword(auth);
-  const [user, loading, error] = useAuthState(auth);
 
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +24,7 @@ export default function SignUp() {
   };
 
   const handleAuthorize = async () => {
-    const result = await fetch(`${emulator}?id=${user?.uid}`, {
+    const result = await fetch(`${emulator}?id=${user?.user.uid}`, {
       credentials: "include",
     });
     const { url } = await result.json();
@@ -41,7 +38,7 @@ export default function SignUp() {
     <motion.form
       layout
       onSubmit={handleSignUp}
-      className="row-span-2 row-start-3 justify-self-stretch overflow-hidden px-10 text-zinc-600 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
+      className="text-zinc-600 row-span-2 row-start-3 justify-self-stretch overflow-hidden px-10 md:col-span-3 md:col-start-2 2xl:col-span-1 2xl:col-start-2"
     >
       <AnimatePresence>
         {!user ? (
@@ -75,7 +72,7 @@ export default function SignUp() {
             </p>
             <button
               onClick={handleAuthorize}
-              className="h-12 w-full rounded-2xl bg-zinc-800 uppercase text-zinc-500  hover:text-white hover:shadow-lg focus:outline-none"
+              className="bg-zinc-800 text-zinc-500 hover:text-white h-12 w-full rounded-2xl  uppercase hover:shadow-lg focus:outline-none active:bg-orange"
             >
               Sign in to Spotify
             </button>
@@ -105,25 +102,17 @@ const SignUpUpInput = ({ setEmail, setPassword }: Props) => {
       }}
       className="flex flex-col overflow-hidden"
     >
-      <label htmlFor="email" className="pb-1">
-        Email address
-      </label>
-      <input
-        type="text"
-        id="email"
+      <Input
+        label="Email address"
         name="email"
-        onChange={(e) => setEmail(e.target.value)}
-        className="mb-2 border-b border-zinc-700 bg-transparent pb-4 text-white caret-[#e75627] hover:border-white focus:outline-none"
+        type="text"
+        setValue={setEmail}
       />
-      <label htmlFor="password" className="">
-        Password
-      </label>
-      <input
-        type="password"
-        id="password"
+      <Input
+        label="Password"
         name="password"
-        onChange={(e) => setPassword(e.target.value)}
-        className="mb-2 border-b border-zinc-700 bg-transparent pb-4 text-white caret-[#e75627] hover:border-white focus:outline-none"
+        type="password"
+        setValue={setPassword}
       />
     </motion.div>
   );
@@ -140,10 +129,10 @@ const SignUpButton = ({ accountCreated }: { accountCreated: boolean }) => {
         width: accountCreated ? "3rem" : "100%",
       }}
       transition={{ duration: 0.7, ease: "easeInOut" }}
-      className="my-4 h-12 rounded-2xl bg-zinc-800 uppercase text-zinc-500 hover:text-white hover:shadow-lg focus:outline-none"
+      className="bg-zinc-800 text-zinc-500 hover:text-white my-4 h-12 rounded-2xl uppercase hover:shadow-lg focus:outline-none active:bg-orange"
     >
       {accountCreated ? (
-        <span className="flex items-center justify-center text-white">
+        <span className="text-white flex items-center justify-center">
           <FiCheck />
         </span>
       ) : (
@@ -161,9 +150,9 @@ const AccountCreatedText = () => {
       animate={{ opacity: 1, x: 0, width: "auto" }}
       exit={{ opacity: 0 }}
       transition={{ delay: 0.7, duration: 0.5 }}
-      className="whitespace-nowrap pl-4 text-white"
+      className="text-white whitespace-nowrap pl-4"
     >
-      <span className="font-bold uppercase text-[#e75627]">Fuse</span> account
+      <span className="font-bold uppercase text-orange">Fuse</span> account
       created
     </motion.p>
   );
@@ -180,7 +169,7 @@ const SignInLink = () => {
       className="text-center"
     >
       Already have an account?{" "}
-      <Link href="/auth" className="text-white">
+      <Link href="/signin" className="text-white">
         Sign in
       </Link>
     </motion.p>
