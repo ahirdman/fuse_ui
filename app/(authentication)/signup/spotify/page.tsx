@@ -1,20 +1,26 @@
 "use client";
 
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase/initialization";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FiCheck } from "react-icons/fi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { UserCreatedToast } from "@/components/toasts";
 import toast from "react-hot-toast";
 
+type ParamStatus = "success" | "denied" | "missmatch" | "error" | null;
+
 export default function AuthenticateSpotify() {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const status = searchParams.get("status") as ParamStatus;
+  const success = user && status === "success";
 
   useEffect(() => {
-    if (user) {
+    if (success) {
       setTimeout(() => {
         router.push("/dashboard");
         toast.custom((toast) => (
@@ -38,7 +44,7 @@ export default function AuthenticateSpotify() {
         </p>
       </div>
       <AnimatePresence>
-        {!user ? (
+        {success ? null : (
           <motion.p
             key="info"
             layout
@@ -61,7 +67,7 @@ export default function AuthenticateSpotify() {
             You need to allow <span className="font-bold">fuse</span> to acces
             your spotify library. Click the button below to authorize.
           </motion.p>
-        ) : null}
+        )}
       </AnimatePresence>
       <AnimatePresence>
         <motion.div
@@ -74,12 +80,12 @@ export default function AuthenticateSpotify() {
             disabled={true}
             initial={{ width: "100%" }}
             animate={{
-              width: user ? "3rem" : "100%",
+              width: success ? "3rem" : "100%",
             }}
             transition={{ delay: 0.5, duration: 1, ease: "easeInOut" }}
             className="flex h-12 items-center justify-center rounded-2xl bg-zinc-800 uppercase text-zinc-500"
           >
-            {user ? (
+            {success ? (
               <span className="text-white">
                 <FiCheck />
               </span>
@@ -87,7 +93,7 @@ export default function AuthenticateSpotify() {
               "Sign in to Spotify"
             )}
           </motion.button>
-          {user ? (
+          {success ? (
             <motion.p
               key="connected"
               initial={{ opacity: 0, x: 100, width: 0 }}

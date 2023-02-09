@@ -2,7 +2,7 @@
 
 import { SignedOutToast } from "@/components/toasts";
 import config from "@/config/default";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase/initialization";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

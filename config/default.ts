@@ -1,3 +1,5 @@
+const API_URL = process.env.NEXT_PUBLIC_API as unknown as URL;
+
 const config = {
   firebase: {
     credentials: {
@@ -13,7 +15,7 @@ const config = {
     emulators: {
       authentication: {
         isActive: process.env.NODE_ENV === "development",
-        url: "http://localhost:9099",
+        url: "http://127.0.0.1:9099",
       },
       db: {
         isActive: process.env.NODE_ENV === "development",
@@ -25,6 +27,11 @@ const config = {
         origin: "localhost",
         port: 5001,
       },
+    },
+  },
+  api: {
+    token: {
+      url: new URL(`${API_URL}/token/authorize`),
     },
   },
   pages: [

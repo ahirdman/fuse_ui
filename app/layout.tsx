@@ -19,7 +19,9 @@ export default function RootLayout({ children }: Props) {
       <body>
         <main className="flex h-screen w-screen flex-col overflow-hidden bg-[#141416]">
           {children}
-          <Toaster position="top-center" />
+          <aside>
+            <Toaster position="top-center" />
+          </aside>
         </main>
       </body>
     </html>

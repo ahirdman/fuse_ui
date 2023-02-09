@@ -2,7 +2,7 @@
 
 import LoadingCircle from "@/components/loadingCircle";
 import { SignedInToast } from "@/components/toasts";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase/initialization";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
