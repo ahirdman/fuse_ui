@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase/initialization";
 import { signOut } from "firebase/auth";
 
 export default function Settings() {

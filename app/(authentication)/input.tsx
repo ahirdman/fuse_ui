@@ -3,13 +3,19 @@ import { FiXCircle } from "react-icons/fi";
 
 interface Props {
   setValue: (e: string) => void;
-  type: HTMLInputTypeAttribute;
+  type?: HTMLInputTypeAttribute;
   name: string;
   label: string;
   error?: boolean;
 }
 
-export default function Input({ setValue, type, name, label, error }: Props) {
+export default function Input({
+  setValue,
+  type = "text",
+  name,
+  label,
+  error,
+}: Props) {
   return (
     <>
       <label htmlFor={name} className="relative flex flex-col pb-1">
@@ -24,7 +30,7 @@ export default function Input({ setValue, type, name, label, error }: Props) {
         />
         {error ? (
           <span className="absolute inset-y-7 right-0">
-            <FiXCircle size={20} className="stroke-orange" />
+            <FiXCircle size={20} className="stroke-red" />
           </span>
         ) : null}
       </label>
