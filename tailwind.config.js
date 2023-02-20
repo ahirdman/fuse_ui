@@ -16,6 +16,7 @@ module.exports = {
       colors: {
         orange: "#e75627",
         red: "#e72727",
+        darkGray: "#141416",
       },
       fontFamily: {
         sans: ["var(--font-mulish)"],

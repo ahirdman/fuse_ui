@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
-import Input from "../input";
+import { Input } from "../../../components/authentication/input";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");

@@ -17,7 +17,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en" className={`${mulish.variable} font-sans`}>
       <head />
       <body>
-        <main className="flex h-screen w-screen flex-col overflow-hidden bg-[#141416]">
+        <main className="flex h-screen w-screen flex-col overflow-hidden bg-darkGray">
           {children}
           <aside>
             <Toaster position="top-center" />
