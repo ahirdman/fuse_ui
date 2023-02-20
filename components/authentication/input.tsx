@@ -9,13 +9,7 @@ interface Props {
   error?: boolean;
 }
 
-export default function Input({
-  setValue,
-  type = "text",
-  name,
-  label,
-  error,
-}: Props) {
+export function Input({ setValue, type = "text", name, label, error }: Props) {
   return (
     <>
       <label htmlFor={name} className="relative flex flex-col pb-1">
