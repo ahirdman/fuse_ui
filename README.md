@@ -4,6 +4,6 @@ A music library manager that focuses on tagging tracks and generateing unique pl
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Try it out!
 
-- [Live Application][https://fuse-ui.vercel.app/fuse-4210a/us-central1/api] - WIP Application
+- [Live Application](https://fuse-ui.vercel.app/fuse-4210a/us-central1/api) - WIP Application
